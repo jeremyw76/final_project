@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_06_023714) do
+ActiveRecord::Schema.define(version: 2019_11_06_032452) do
 
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
@@ -26,6 +26,19 @@ ActiveRecord::Schema.define(version: 2019_11_06_023714) do
     t.index ["resource_type", "resource_id"], name: "index_active_admin_comments_on_resource_type_and_resource_id"
   end
 
+  create_table "addresses", force: :cascade do |t|
+    t.integer "customer_id", null: false
+    t.string "address1"
+    t.string "address2"
+    t.string "city"
+    t.integer "province_id", null: false
+    t.string "postal_code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_addresses_on_customer_id"
+    t.index ["province_id"], name: "index_addresses_on_province_id"
+  end
+
   create_table "admin_users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -38,4 +51,134 @@ ActiveRecord::Schema.define(version: 2019_11_06_023714) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "customers", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.string "email"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "entitlements", force: :cascade do |t|
+    t.integer "customer_id", null: false
+    t.integer "photo_id", null: false
+    t.string "hash"
+    t.datetime "hash_expiry"
+    t.integer "access_count"
+    t.datetime "entitlement_expiry"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_entitlements_on_customer_id"
+    t.index ["photo_id"], name: "index_entitlements_on_photo_id"
+  end
+
+  create_table "line_items", force: :cascade do |t|
+    t.integer "order_id", null: false
+    t.string "item_type", null: false
+    t.integer "item_id", null: false
+    t.integer "quantity"
+    t.integer "value"
+    t.boolean "taxable"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["item_type", "item_id"], name: "index_line_items_on_item_type_and_item_id"
+    t.index ["order_id"], name: "index_line_items_on_order_id"
+  end
+
+  create_table "orders", force: :cascade do |t|
+    t.integer "customer_id", null: false
+    t.string "status"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_orders_on_customer_id"
+  end
+
+  create_table "package_purchases", force: :cascade do |t|
+    t.string "description"
+    t.text "rules"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "packages", force: :cascade do |t|
+    t.string "description"
+    t.text "rules"
+    t.integer "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "payment_methods", force: :cascade do |t|
+    t.integer "customer_id"
+    t.string "payment_token"
+    t.string "card_type"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["customer_id"], name: "index_payment_methods_on_customer_id"
+  end
+
+  create_table "payments", force: :cascade do |t|
+    t.integer "payment_method_id", null: false
+    t.integer "order_id", null: false
+    t.integer "amount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["order_id"], name: "index_payments_on_order_id"
+    t.index ["payment_method_id"], name: "index_payments_on_payment_method_id"
+  end
+
+  create_table "photo_tags", force: :cascade do |t|
+    t.integer "photo_id", null: false
+    t.integer "tag_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["photo_id"], name: "index_photo_tags_on_photo_id"
+    t.index ["tag_id"], name: "index_photo_tags_on_tag_id"
+  end
+
+  create_table "photos", force: :cascade do |t|
+    t.string "description"
+    t.string "location"
+    t.integer "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "provinces", force: :cascade do |t|
+    t.string "name"
+    t.string "province_code"
+    t.decimal "tax_rate", precision: 3, scale: 2
+    t.string "tax_code"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "taxes", force: :cascade do |t|
+    t.integer "line_item_id", null: false
+    t.string "code"
+    t.decimal "rate", precision: 3, scale: 2
+    t.integer "amount"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["line_item_id"], name: "index_taxes_on_line_item_id"
+  end
+
+  add_foreign_key "addresses", "customers"
+  add_foreign_key "addresses", "provinces"
+  add_foreign_key "entitlements", "customers"
+  add_foreign_key "entitlements", "photos"
+  add_foreign_key "line_items", "orders"
+  add_foreign_key "orders", "customers"
+  add_foreign_key "payment_methods", "customers"
+  add_foreign_key "payments", "orders"
+  add_foreign_key "payments", "payment_methods"
+  add_foreign_key "photo_tags", "photos"
+  add_foreign_key "photo_tags", "tags"
+  add_foreign_key "taxes", "line_items"
 end

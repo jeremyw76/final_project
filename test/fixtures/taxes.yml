@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  line_item: one
+  code: MyString
+  rate: 9.99
+  amount: 
+
+two:
+  line_item: two
+  code: MyString
+  rate: 9.99
+  amount: 
