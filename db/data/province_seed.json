@@ -1,0 +1,82 @@
+{
+  "provinces": [
+    {
+      "name": "Alberta",
+      "province_code": "AB",
+      "tax_rate": 0.0,
+      "tax_code": "P"
+    },
+    {
+      "name": "British Columbia",
+      "province_code": "BC",
+      "tax_rate": 0.07,
+      "tax_code": "P"
+    },
+    {
+      "name": "Manitoba",
+      "province_code": "MB",
+      "tax_rate": 0.07,
+      "tax_code": "P"
+    },
+    {
+      "name": "New Brunswick",
+      "province_code": "NB",
+      "tax_rate": 0.1,
+      "tax_code": "H"
+    },
+    {
+      "name": "Newfoundland and Labrador",
+      "province_code": "NL",
+      "tax_rate": 0.1,
+      "tax_code": "H"
+    },
+    {
+      "name": "Northwest Territories",
+      "province_code": "NT",
+      "tax_rate": 0.0,
+      "tax_code": "P"
+    },
+    {
+      "name": "Nova Scotia",
+      "province_code": "NS",
+      "tax_rate": 0.1,
+      "tax_code": "H"
+    },
+    {
+      "name": "Nunavut",
+      "province_code": "NU",
+      "tax_rate": 0.0,
+      "tax_code": "P"
+    },
+    {
+      "name": "Ontario",
+      "province_code": "ON",
+      "tax_rate": 0.08,
+      "tax_code": "H"
+    },
+    {
+      "name": "Prince Edward Island",
+      "province_code": "PE",
+      "tax_rate": 0.1,
+      "tax_code": "H"
+    },
+    {
+      "name": "Quebec",
+      "province_code": "QC",
+      "tax_rate": 0.09975,
+      "tax_code": "Q"
+    },
+    {
+      "name": "Saskatchewan",
+      "province_code": "SK",
+      "tax_rate": 0.06,
+      "tax_code": "P"
+    },
+    {
+      "name": "Yukon",
+      "province_code": "YT",
+      "tax_rate": 0.0,
+      "tax_code": "P"
+    }
+  ]
+}
