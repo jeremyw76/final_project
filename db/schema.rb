@@ -12,13 +12,16 @@
 
 ActiveRecord::Schema.define(version: 2019_11_06_032452) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "active_admin_comments", force: :cascade do |t|
     t.string "namespace"
     t.text "body"
     t.string "resource_type"
-    t.integer "resource_id"
+    t.bigint "resource_id"
     t.string "author_type"
-    t.integer "author_id"
+    t.bigint "author_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["author_type", "author_id"], name: "index_active_admin_comments_on_author_type_and_author_id"
@@ -27,11 +30,11 @@ ActiveRecord::Schema.define(version: 2019_11_06_032452) do
   end
 
   create_table "addresses", force: :cascade do |t|
-    t.integer "customer_id", null: false
+    t.bigint "customer_id", null: false
     t.string "address1"
     t.string "address2"
     t.string "city"
-    t.integer "province_id", null: false
+    t.bigint "province_id", null: false
     t.string "postal_code"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -60,8 +63,8 @@ ActiveRecord::Schema.define(version: 2019_11_06_032452) do
   end
 
   create_table "entitlements", force: :cascade do |t|
-    t.integer "customer_id", null: false
-    t.integer "photo_id", null: false
+    t.bigint "customer_id", null: false
+    t.bigint "photo_id", null: false
     t.string "hash"
     t.datetime "hash_expiry"
     t.integer "access_count"
@@ -73,9 +76,9 @@ ActiveRecord::Schema.define(version: 2019_11_06_032452) do
   end
 
   create_table "line_items", force: :cascade do |t|
-    t.integer "order_id", null: false
+    t.bigint "order_id", null: false
     t.string "item_type", null: false
-    t.integer "item_id", null: false
+    t.bigint "item_id", null: false
     t.integer "quantity"
     t.integer "value"
     t.boolean "taxable"
@@ -86,7 +89,7 @@ ActiveRecord::Schema.define(version: 2019_11_06_032452) do
   end
 
   create_table "orders", force: :cascade do |t|
-    t.integer "customer_id", null: false
+    t.bigint "customer_id", null: false
     t.string "status"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -109,7 +112,7 @@ ActiveRecord::Schema.define(version: 2019_11_06_032452) do
   end
 
   create_table "payment_methods", force: :cascade do |t|
-    t.integer "customer_id"
+    t.bigint "customer_id"
     t.string "payment_token"
     t.string "card_type"
     t.datetime "created_at", precision: 6, null: false
@@ -118,8 +121,8 @@ ActiveRecord::Schema.define(version: 2019_11_06_032452) do
   end
 
   create_table "payments", force: :cascade do |t|
-    t.integer "payment_method_id", null: false
-    t.integer "order_id", null: false
+    t.bigint "payment_method_id", null: false
+    t.bigint "order_id", null: false
     t.integer "amount"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -128,8 +131,8 @@ ActiveRecord::Schema.define(version: 2019_11_06_032452) do
   end
 
   create_table "photo_tags", force: :cascade do |t|
-    t.integer "photo_id", null: false
-    t.integer "tag_id", null: false
+    t.bigint "photo_id", null: false
+    t.bigint "tag_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["photo_id"], name: "index_photo_tags_on_photo_id"
@@ -160,7 +163,7 @@ ActiveRecord::Schema.define(version: 2019_11_06_032452) do
   end
 
   create_table "taxes", force: :cascade do |t|
-    t.integer "line_item_id", null: false
+    t.bigint "line_item_id", null: false
     t.string "code"
     t.decimal "rate", precision: 3, scale: 2
     t.integer "amount"
