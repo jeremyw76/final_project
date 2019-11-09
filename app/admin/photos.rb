@@ -47,7 +47,7 @@ ActiveAdmin.register Photo do
 
     def update
       params.permit(:id, photo: [:description, :display_price, :image])
-      puts 'UPDATE'
+
       photo = Photo.find(params[:id])
       image = photo.image
       new_image = params[:photo][:image]
@@ -56,9 +56,6 @@ ActiveAdmin.register Photo do
       photo.value = params[:photo][:display_price].to_f * 100
       if new_image then
         photo.image = new_image
-        puts 'Assigning new image'
-      else
-        puts 'keeping old image'
       end
 
       photo.save
