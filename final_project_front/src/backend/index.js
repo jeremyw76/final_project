@@ -13,7 +13,9 @@ const securedAxiosInstance = axios.create({
 const plainAxiosInstance = axios.create({
   baseURL: API_URL,
   withCredentials: true,
-  'Content-Type': 'application/json'
+  headers: {
+    'Content-Type': 'application/json'
+  }
 })
 
 securedAxiosInstance.interceptors.request.use(config => {
