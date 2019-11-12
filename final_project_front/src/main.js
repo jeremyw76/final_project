@@ -7,16 +7,12 @@ import VueAxios from 'vue-axios'
 import { securedAxiosInstance, plainAxiosInstance } from './backend/index'
 import './../node_modules/bulma/css/bulma.css'
 
-// import './main.css'
-console.log('hey')
-
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, {
   secured: securedAxiosInstance,
   plain: plainAxiosInstance
 })
-console.log('yo-e-yo')
 
 /* eslint-disable no-new */
 new Vue({

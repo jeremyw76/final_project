@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-toolbar dark>
-      <v-toolbar-title @click="redirectToHome">Home</v-toolbar-title>
+      <v-toolbar-title @click="redirectToHome">NAVBAR</v-toolbar-title>
     </v-toolbar>
   </div>
 </template>

@@ -1,68 +1,28 @@
 <template>
-  <div class="card">
-    <div class="field is-horizontal">
-      <label class="field-label">Email</label>
-        <div class="control has-icons-left has-icons-right">
-          <input class="input" type="email" placeholder="Email input">
-          <span class="icon is-small is-left">
-            <font-awesome-icon :icon="['fas', 'envelope']"></font-awesome-icon>
-            <i class="fas fa-envelope"></i>
-          </span>
-          <span class="icon is-small is-right">
-            <i class="fas fa-exclamation-triangle"></i>
-          </span>
-        </div>
-      <p class="help is-danger">This email is invalid</p>
-    </div>
-
-    <div class="field">
-      <label class="label">Subject</label>
-      <div class="control">
-        <div class="select">
-          <select>
-            <option>Select dropdown</option>
-            <option>With options</option>
-          </select>
-        </div>
-      </div>
-    </div>
-
-    <div class="field">
-      <label class="label">Message</label>
-      <div class="control">
-        <textarea class="textarea" placeholder="Textarea"></textarea>
-      </div>
-    </div>
-
-    <div class="field">
-      <div class="control">
-        <label class="checkbox">
-          <input type="checkbox">
-          I agree to the <a href="#">terms and conditions</a>
-        </label>
-      </div>
-    </div>
-
-    <div class="field">
-      <div class="control">
-        <label class="radio">
-          <input type="radio" name="question">
-          Yes
-        </label>
-        <label class="radio">
-          <input type="radio" name="question">
-          No
-        </label>
-      </div>
-    </div>
-
-    <div class="field is-grouped">
-      <div class="control">
-        <button class="button is-link">Submit</button>
-      </div>
-      <div class="control">
-        <button class="button is-link is-light">Cancel</button>
+  <div>
+    <Navbar></Navbar>
+    <div class="columns is-centered is-vcentered">
+      <div class="column is-full-mobile is-one-third-desktop">
+        <Signin></Signin>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import Navbar from '@/components/Navbar'
+import Signin from '@/components/Signin'
+
+export default {
+components: {
+    Navbar,
+    Signin
+  }
+}
+</script>
+
+<style scoped>
+.columns {
+  margin-top: 3em;
+}
+</style>

@@ -3,7 +3,8 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 
 import {
   faUserSecret,
-  faEnvelope
+  faEnvelope,
+  faExclamationTriangle
 } from '@fortawesome/free-solid-svg-icons'
 
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -11,7 +12,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 export default () => {
   library.add(
     faUserSecret,
-    faEnvelope
+    faEnvelope,
+    faExclamationTriangle
   )
 
   Vue.component('font-awesome-icon', FontAwesomeIcon)
