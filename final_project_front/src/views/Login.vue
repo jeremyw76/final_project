@@ -5,6 +5,7 @@
         <div class="control has-icons-left has-icons-right">
           <input class="input" type="email" placeholder="Email input">
           <span class="icon is-small is-left">
+            <font-awesome-icon :icon="['fas', 'envelope']"></font-awesome-icon>
             <i class="fas fa-envelope"></i>
           </span>
           <span class="icon is-small is-right">
