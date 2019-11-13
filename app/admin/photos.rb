@@ -18,8 +18,12 @@ ActiveAdmin.register Photo do
     f.inputs do
       f.input :description
       f.input :display_price, as: :string
-      f.label :current_image if :image
-      f.input :image, as: :file, hint: image_tag(f.object.image.variant(resize: "300x300^"))
+      if f.object.image.attached? then
+        f.label :current_image
+        f.input :image, as: :file, hint: image_tag(f.object.image.variant(resize: "300x300^"))
+      else
+        f.input :image, as: :file
+      end
     end
     f.actions
   end
