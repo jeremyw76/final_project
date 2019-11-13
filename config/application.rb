@@ -24,7 +24,7 @@ module FinalProject
     # end
 
     # Forces https.
-    config.force_ssl = true
+    # config.force_ssl = true
 
     # Whitelists the front-end server for cross-site requests.
     config.middleware.insert_before 0, Rack::Cors do
