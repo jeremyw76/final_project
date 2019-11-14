@@ -1,7 +1,7 @@
 <template>
-  <div class="columns">
-    <div v-for="image in images" class="column">
-      <ImageCard v-bind:image="image"></ImageCard>
+  <div class="columns is-multiline">
+    <div v-for="image in images" :key="image.id" class="column is-one-fifth">
+      <ImageCard :image="image"></ImageCard>
     </div>
   </div>
 </template>

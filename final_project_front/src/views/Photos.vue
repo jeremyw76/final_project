@@ -9,7 +9,7 @@
         <SearchBar></SearchBar>
       </div>
     </div>
-    <PhotoGrid v-bind:images="images"></PhotoGrid>
+    <PhotoGrid :images="images"></PhotoGrid>
   </div>
 </template>
 

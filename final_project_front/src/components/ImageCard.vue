@@ -1,7 +1,7 @@
 <template>
   <div class="card">
     <div class="image">
-      <img :src="url">
+      <img :src="image.small_url" @click="showImageModal"/>
     </div>
   </div>
 </template>
@@ -9,20 +9,18 @@
 <script>
 export default {
   props: {
-    image: String,
-    url: String,
+    image: Object,
   },
-  data: function () {
-    return {
-      url: 'no_url'
+  methods: {
+    showImageModal () {
+      console.log('Show modal')
     }
-  },
-  created () {
-    console.log('CREATED')
-    this.url = this.image
   }
 }
 </script>
 
 <style scoped>
+  img {
+    cursor: pointer;
+  }
 </style>

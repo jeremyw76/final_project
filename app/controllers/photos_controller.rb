@@ -1,18 +1,28 @@
 class PhotosController < ApplicationController
 
   def index
-    render json: { images: Photo.all.with_attached_image.map do | photo |
-      puts photo.image
-      if photo.image.attached?
-        puts 'Yes attached sdfsdfsnow'
-        rails_representation_url(photo.image.variant(resize: "600x600^"))
-        # Application.routes.url_helpers.get_url(photo.image)
-      else
-        nil
-      end
-    end}
+    index = 0
+
+    photo_data = Photo.all.with_attached_image.map do | photo |
+      {
+        id: index,
+        small_url: small_image_url(photo),
+        description: photo.description,
+        price: photo.value
+      }
+    end
+
+    render json: { images: photo_data }
   end
 
   def show
+  end
+
+  def small_image_url(photo)
+    if photo.image.attached?
+      rails_representation_url(photo.image.variant(resize: "600x600^"))
+    else
+      nil
+    end
   end
 end
