@@ -7,6 +7,9 @@
 </template>
 
 <script>
+import 'es6-promise/auto'
+import { store } from 'vuex'
+
 export default {
   props: {
     image: Object,
@@ -14,6 +17,7 @@ export default {
   methods: {
     showImageModal () {
       console.log('Show modal')
+      this.$store.commit('showSingleImageModal', this.image.large_url)
     }
   }
 }
