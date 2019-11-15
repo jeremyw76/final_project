@@ -1,6 +1,9 @@
 class Photo < ApplicationRecord
   has_one_attached :image
 
+  validates :description, presence: true
+  validates :value, presence: true
+
   validate :correct_document_mime_type
 
   def display_price
