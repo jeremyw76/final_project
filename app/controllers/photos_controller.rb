@@ -5,11 +5,11 @@ class PhotosController < ApplicationController
 
     photo_data = Photo.all.with_attached_image.map do | photo |
       {
-        id: index,
+        id: photo.id,
         small_url: small_image_url(photo),
         large_url: large_image_url(photo),
         description: photo.description,
-        price: photo.value
+        price: photo.display_price
       }
     end
 

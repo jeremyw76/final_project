@@ -8,7 +8,7 @@ export default {
   store: new Vuex.Store({
     state: {
       showSingleImageModal: false,
-      singleImageUrl: '',
+      modalImage: null,
       loggedIn: false,
       user: {
         name: null,
@@ -23,13 +23,13 @@ export default {
       previousPage: '/'
     },
     mutations: {
-      showSingleImageModal (state, singleImageUrl) {
+      showSingleImageModal (state, image) {
         state.showSingleImageModal = true;
-        state.singleImageUrl = singleImageUrl;
+        state.modalImage = image;
       },
       hideSingleImageModal (state) {
         state.showSingleImageModal = false;
-        state.singleImageUrl = '';
+        state.modalImage = null;
       },
       logInUser (state, user) {
         state.loggedIn = true;

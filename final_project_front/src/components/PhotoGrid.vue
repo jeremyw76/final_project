@@ -3,7 +3,7 @@
     <div v-for="image in images" :key="image.id" class="column is-one-fifth">
       <ImageCard :image="image"></ImageCard>
     </div>
-    <ModalPhoto :imageUrl="singleImageUrl" v-if="showModal"></ModalPhoto>
+    <ModalPhoto :image="selectedImage" v-if="showModal"></ModalPhoto>
   </div>
 </template>
 
@@ -19,7 +19,6 @@
     },
     data: function () {
       return {
-        singleImageUrl: '',
       }
     },
     components: {
@@ -28,8 +27,10 @@
     },
     computed: mapState({
       showModal (state) {
-        this.singleImageUrl = state.singleImageUrl;
-        return state.showSingleImageModal;
+        return state.showSingleImageModal
+      },
+      selectedImage (state) {
+        return state.modalImage
       }
     })
   }

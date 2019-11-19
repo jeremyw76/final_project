@@ -16,8 +16,7 @@ export default {
   },
   methods: {
     showImageModal () {
-      console.log('Show modal')
-      this.$store.commit('showSingleImageModal', this.image.large_url)
+      this.$store.commit('showSingleImageModal', this.image)
     }
   }
 }

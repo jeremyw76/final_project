@@ -68,7 +68,9 @@ export default {
   methods: {
     signup () {
       this.$http.plain.post('/users.json', { user: {
-        email: this.email, password: this.password, password_confirmation: this.confirmPassword
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.confirmPassword
       }})
         .then(response => {
           if (response.data.success) {

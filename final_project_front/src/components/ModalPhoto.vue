@@ -1,10 +1,14 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask">
+    <div class="modal-mask" @click="this.hideModal">
       <div class="modal-wrapper">
         <div class="modal-container">
+          <h3 class="title is-3 is-pulled-left">{{image.description}}</h3>
           <div class="image">
-            <img :src="imageUrl" @click="this.hideModal"/>
+            <img :src="image.large_url" />
+          </div>
+          <div class="modal-footer">
+            <p class="subtitle is-pulled-left">{{formattedPrice}}</p>
           </div>
         </div>
       </div>
@@ -15,14 +19,18 @@
 <script>
 export default {
   props: {
-    imageUrl: String
+    image: Object
   },
   methods: {
-      hideModal () {
-        console.log('click')
-        this.$store.commit('hideSingleImageModal')
-      }
-    },
+    hideModal () {
+      this.$store.commit('hideSingleImageModal')
+    }
+  },
+  computed: {
+    formattedPrice () {
+      return '$' + this.image.price.toFixed(2)
+    }
+  }
 }
 </script>
 
@@ -67,5 +75,10 @@ export default {
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
   transform: scale(1.1);
+}
+
+.modal-footer {
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 </style>

@@ -36,7 +36,6 @@ export default {
   },
   created () {
     this.loadPhotos()
-    console.log('CREATED')
   },
   methods: {
     loadPhotos () {
