@@ -3,7 +3,7 @@
     <Navbar></Navbar>
     <div class="columns is-centered is-vcentered">
       <div class="column is-full-mobile is-one-third-desktop">
-        <Signin></Signin>
+        <SignupSuccess></SignupSuccess>
       </div>
     </div>
   </div>
@@ -11,14 +11,14 @@
 
 <script>
 import Navbar from '@/components/Navbar'
-import Signin from '@/components/Signin'
+import SignupSuccess from '@/components/SignupSuccess'
 
 export default {
   components: {
-    Navbar,
-    Signin
+      Navbar,
+      SignupSuccess
+    }
   }
-}
 </script>
 
 <style scoped>
