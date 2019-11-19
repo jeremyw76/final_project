@@ -48,8 +48,13 @@
 
         <div class="navbar-end">
           <div class="navbar-item">
-            <div class="buttons">
-              <a class="button is-primary">
+            <div v-if="loggedIn" class="buttons">
+              <a class="button is-light" @click="logUserOut">
+                Log out
+              </a>
+            </div>
+            <div v-else class="buttons">
+              <a class="button is-primary" @click="redirectToSignup">
                 <strong>Sign up</strong>
               </a>
               <a class="button is-light" @click="redirectToLogin">
@@ -65,6 +70,10 @@
 
 <script>
 export default {
+  data () {
+    return {
+    }
+  },
   methods: {
     redirectToHome () {
       this.$router.push('/')
@@ -72,8 +81,21 @@ export default {
     redirectToLogin () {
       this.$router.push('/login')
     },
+    redirectToSignup () {
+      this.$router.push('/signup')
+    },
     redirectToImages () {
       this.$router.push('/photos')
+    },
+    logUserOut () {
+      this.$http.secured.delete('/users/sign_out.json')
+      this.$store.commit('logOutUser')
+      this.$store.commit('clearCSRFToken')
+    },
+  },
+  computed: {
+    loggedIn () {
+      return this.$store.state.loggedIn
     }
   }
 }
