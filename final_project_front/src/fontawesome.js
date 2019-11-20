@@ -4,19 +4,28 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import {
   faUserSecret,
   faEnvelope,
-  faExclamationTriangle
+  faExclamationTriangle,
+  faCartPlus,
+  faMinus,
+  faShoppingBasket,
+  faShoppingCart
 } from '@fortawesome/free-solid-svg-icons'
 
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon, FontAwesomeLayers } from '@fortawesome/vue-fontawesome'
 
 export default () => {
   library.add(
     faUserSecret,
     faEnvelope,
-    faExclamationTriangle
+    faExclamationTriangle,
+    faCartPlus,
+    faShoppingBasket,
+    faMinus,
+    faShoppingCart
   )
 
   Vue.component('font-awesome-icon', FontAwesomeIcon)
+  Vue.component('font-awesome-layers', FontAwesomeLayers)
 
   Vue.config.productionTip = false
 }

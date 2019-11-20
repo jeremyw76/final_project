@@ -47,6 +47,16 @@ export default {
       },
       clearCSRFToken (state) {
         state.session.csrfToken = null
+      },
+      addToCart (state, cartItem) {
+        state.cart.items.push(cartItem)
+      },
+      removeFromCart (state, cartItem) {
+        let index = state.cart.items.findIndex(item => item.id === cartItem.id);
+
+        if (index > -1) {
+          state.cart.items.splice(index, 1)
+        }
       }
     }
   })

@@ -1,6 +1,6 @@
 <template>
   <transition name="modal">
-    <div class="modal-mask" @click="this.hideModal">
+    <div class="modal-mask" @click="hideModal">
       <div class="modal-wrapper">
         <div class="modal-container">
           <h3 class="title is-3 is-pulled-left">{{image.description}}</h3>
@@ -8,7 +8,23 @@
             <img :src="image.large_url" />
           </div>
           <div class="modal-footer">
-            <p class="subtitle is-pulled-left">{{formattedPrice}}</p>
+            <div class="level">
+              <p class="subtitle is-pulled-left level-left">{{formattedPrice}}</p>
+              <span
+                v-if="countInCart > 0"
+                class="icon level-right has-text-warning"
+                @click="removeFromCart"
+                @click.stop="hideModal"
+              >
+                <font-awesome-layers>
+                  <font-awesome-icon :icon="['fas', 'shopping-cart']"></font-awesome-icon>
+                  <font-awesome-icon :icon="['fas', 'minus']" class="inverse"></font-awesome-icon>
+                </font-awesome-layers>
+              </span>
+              <span class="icon level-right has-text-success" @click="addToCart" @click.stop="hideModal">
+                <font-awesome-icon :icon="['fas', 'cart-plus']"></font-awesome-icon>
+              </span>
+            </div>
           </div>
         </div>
       </div>
@@ -22,13 +38,32 @@ export default {
     image: Object
   },
   methods: {
-    hideModal () {
+    hideModal (event) {
+      console.log(event.target)
       this.$store.commit('hideSingleImageModal')
+    },
+    addToCart () {
+      let cartItem = {
+        type: 'Photo',
+        id: this.image.id
+      }
+      this.$store.commit('addToCart', cartItem)
+    },
+    removeFromCart() {
+      let cartItem = {
+        type: 'Photo',
+        id: this.image.id
+      }
+      this.$store.commit('removeFromCart', cartItem)
     }
   },
   computed: {
     formattedPrice () {
       return '$' + this.image.price.toFixed(2)
+    },
+    countInCart () {
+      let items = this.$store.state.cart.items.filter(item => item.id === this.image.id)
+      return items.length
     }
   }
 }
@@ -71,6 +106,15 @@ export default {
   opacity: 0;
 }
 
+.modal-container {
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.modal-container > .image {
+  max-height: 70%;
+}
+
 .modal-enter .modal-container,
 .modal-leave-active .modal-container {
   -webkit-transform: scale(1.1);
@@ -80,5 +124,19 @@ export default {
 .modal-footer {
   padding-top: 5px;
   padding-bottom: 5px;
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 2em;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.inverse {
+  mix-blend-mode: difference;
+  font-size: 0.3em;
+  margin: auto;
 }
 </style>

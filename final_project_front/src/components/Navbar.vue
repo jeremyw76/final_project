@@ -48,6 +48,14 @@
 
         <div class="navbar-end">
           <div class="navbar-item">
+            <div v-if="cartHasItems" class="button is-warning" @click="loadCheckout">
+              <span>Checkout</span>
+              <span class="icon is-small is-left">
+                <font-awesome-icon :icon="['fas', 'shopping-basket']"></font-awesome-icon>
+              </span>
+            </div>
+          </div>
+          <div class="navbar-item">
             <div v-if="loggedIn" class="buttons">
               <a class="button is-light" @click="logUserOut">
                 Log out
@@ -92,10 +100,16 @@ export default {
       this.$store.commit('logOutUser')
       this.$store.commit('clearCSRFToken')
     },
+    loadCheckout () {
+
+    }
   },
   computed: {
     loggedIn () {
       return this.$store.state.loggedIn
+    },
+    cartHasItems () {
+      return this.$store.state.cart.items.length > 0
     }
   }
 }
