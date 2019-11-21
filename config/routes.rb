@@ -4,6 +4,7 @@ Rails.application.routes.draw do
 
   devise_scope :user do
     post 'refresh/' => 'sessions#refresh'
+    get 'users/' => 'sessions#show'
   end
 
   devise_for :admin_users, ActiveAdmin::Devise.config

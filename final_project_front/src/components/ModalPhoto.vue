@@ -53,7 +53,7 @@ export default {
         type: 'Photo',
         id: this.image.id
       }
-      this.$store.dispatch('removeFromCart', cartItem)
+      this.$store.dispatch('removeFromCartAsync', cartItem)
     }
   },
   computed: {

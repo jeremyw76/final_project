@@ -99,6 +99,7 @@ export default {
       this.$http.secured.delete('/users/sign_out.json')
       this.$store.commit('logOutUser')
       this.$store.commit('clearCSRFToken')
+      this.$store.dispatch('clearCart')
     },
     loadCheckout () {
 

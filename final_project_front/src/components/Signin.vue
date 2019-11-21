@@ -57,20 +57,19 @@ export default {
         this.signinFailed(response)
         return
       }
+      console.log(response.data)
 
       let user = {
         name: response.data.customer.name
       }
 
       this.$store.commit('logInUser', user)
-      this.$store.commit('setCSRFToken', response.data.csrf_token)
 
       this.error = ''
       this.$router.replace(this.$store.state.previousPage)
     },
     signinFailed (error) {
       this.error = (error.response && error.response.data && error.response.data.error) || ''
-      this.$store.commit('clearCSRFToken')
       this.$store.commit('logOutUser')
     }
   }

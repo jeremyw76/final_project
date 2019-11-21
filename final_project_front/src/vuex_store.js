@@ -5,6 +5,11 @@ import { securedAxiosInstance, plainAxiosInstance } from './backend/index'
 
 Vue.use(Vuex)
 
+const postToCartUpdate = (state, errorHandler) => {
+  securedAxiosInstance.post('/carts/update.json', { items: state.cart.items })
+      .catch(error => errorHandler(error))
+}
+
 export default {
   store: new Vuex.Store({
     state: {
@@ -53,10 +58,32 @@ export default {
     },
     actions: {
       addToCartAsync ({ commit, state }, cartItem) {
-        console.log('Adding items')
         commit('addToCart', cartItem)
-        securedAxiosInstance.post('/carts/update.json', { items: state.cart.items })
-          .catch(error => commit('removeFromCart', cartItem))
+        postToCartUpdate(state, error => commit('removeFromCart', cartItem))
+      },
+      removeFromCartAsync ({ commit, state }, cartItem) {
+        commit('removeFromCart', cartItem)
+        postToCartUpdate(state, error => commit('addToCart', cartItem))
+      },
+      clearCart({ commit, state }) {
+        commit('clearCart')
+        postToCartUpdate(state, {})
+      },
+      loadInitialData({ commit, state }) {
+        plainAxiosInstance.get('/users.json')
+          .then(response => {
+            commit('logInUser', response.data.customer)
+            console.log(response.data)
+            if (response.data.cart) {
+              response.data.cart.forEach(item => {
+                console.log(item)
+                commit('addToCart', item)
+              })
+            }
+
+            postToCartUpdate(state, error => {})
+          })
+          .catch(error => console.log(error))
       }
     }
   })
