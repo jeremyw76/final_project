@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import 'es6-promise/auto'
+import { securedAxiosInstance, plainAxiosInstance } from './backend/index'
 
 Vue.use(Vuex)
 
@@ -16,9 +17,6 @@ export default {
       },
       cart: {
         items: []
-      },
-      session: {
-        csrfToken: null
       },
       previousPage: '/'
     },
@@ -42,21 +40,23 @@ export default {
           paymentTokens: [],
         }
       },
-      setCSRFToken (state, token) {
-        state.session.csrfToken = token
-      },
-      clearCSRFToken (state) {
-        state.session.csrfToken = null
-      },
       addToCart (state, cartItem) {
         state.cart.items.push(cartItem)
       },
       removeFromCart (state, cartItem) {
-        let index = state.cart.items.findIndex(item => item.id === cartItem.id);
+        let index = state.cart.items.findIndex(item => item.id === cartItem.id)
 
         if (index > -1) {
           state.cart.items.splice(index, 1)
         }
+      }
+    },
+    actions: {
+      addToCartAsync ({ commit, state }, cartItem) {
+        console.log('Adding items')
+        commit('addToCart', cartItem)
+        securedAxiosInstance.post('/carts/update.json', { items: state.cart.items })
+          .catch(error => commit('removeFromCart', cartItem))
       }
     }
   })

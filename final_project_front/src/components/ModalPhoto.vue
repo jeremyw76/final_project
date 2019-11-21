@@ -39,7 +39,6 @@ export default {
   },
   methods: {
     hideModal (event) {
-      console.log(event.target)
       this.$store.commit('hideSingleImageModal')
     },
     addToCart () {
@@ -47,14 +46,14 @@ export default {
         type: 'Photo',
         id: this.image.id
       }
-      this.$store.commit('addToCart', cartItem)
+      this.$store.dispatch('addToCartAsync', cartItem)
     },
     removeFromCart() {
       let cartItem = {
         type: 'Photo',
         id: this.image.id
       }
-      this.$store.commit('removeFromCart', cartItem)
+      this.$store.dispatch('removeFromCart', cartItem)
     }
   },
   computed: {
