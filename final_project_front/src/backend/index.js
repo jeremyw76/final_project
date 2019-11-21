@@ -35,7 +35,11 @@ securedAxiosInstance.interceptors.request.use(config => {
   return config
 })
 
-securedAxiosInstance.interceptors.response.use(null, error => {
+securedAxiosInstance.interceptors.response.use(response => {
+  if (response.headers['x-csrf-token']) {
+    securedAxiosInstance.csrfToken = response.headers['x-csrf-token']
+  }
+}, error => {
   if (error.response && error.response.status && (error.response.status === 401 || error.response.status === 422)) {
     return plainAxiosInstance.post('/refresh.json', {}, {})
     .then(response => {
