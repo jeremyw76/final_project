@@ -2,9 +2,8 @@ class Address < ApplicationRecord
   belongs_to :customer
   belongs_to :province
 
-  validates: customer, presence: true
+  validates :customer, presence: true
   validates :address1, presence: true
-  validates :address2, presence: true
   validates :city, presence: true
   validates :country, presence: true
   validates :province, presence: true
