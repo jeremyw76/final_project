@@ -52,19 +52,19 @@ class SessionsController < Devise::SessionsController
 
     cart_data = []
 
-    unless user.nil? || user.cart.nil? then
-      puts 'now'
-      puts JSON.parse(user.cart.items)[0]
-      puts "hi"
-      JSON.parse(user.cart.items).each do |item|
-        puts item.type
-        item_data = {
-          id: item["id"],
-          type: item["type"]
-        }
-        cart_data.push item_data
-      end
-    end
+    # unless user.nil? || user.cart.nil? then
+    #   puts 'now'
+    #   puts JSON.parse(user.cart.items)[0]
+    #   puts "hi"
+    #   JSON.parse(user.cart.items).each do |item|
+    #     puts item.type
+    #     item_data = {
+    #       id: item["id"],
+    #       type: item["type"]
+    #     }
+    #     cart_data.push item_data
+    #   end
+    # end
 
     output = {
       customer: customer_data,

@@ -28,28 +28,19 @@ export default {
   },
   data: function () {
     return {
-      images: [],
-      page: 0,
-      count: 15,
-      errors: {},
+    }
+  },
+  computed: {
+    images () {
+      return this.$store.state.images
+    },
+    errors () {
+      return this.$store.state.errors
     }
   },
   created () {
-    this.loadPhotos()
+    this.$store.dispatch('loadImages')
   },
-  methods: {
-    loadPhotos () {
-      this.$http.plain.get('/photos', { page: this.page, count: this.count })
-          .then(response => this.loadPhotosSuccessful(response))
-          .catch(error => this.loadPhotosFailed(error))
-    },
-    loadPhotosSuccessful (response) {
-      this.images = response.data.images
-    },
-    loadPhotosFailed (error) {
-      errors.connectionError = error
-    }
-  }
 }
 </script>
 

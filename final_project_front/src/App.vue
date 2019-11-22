@@ -8,7 +8,7 @@
 export default {
   name: 'App',
   created () {
-    this.$store.dispatch('loadInitialData')
+    // this.$store.dispatch('loadInitialData')
   }
 }
 </script>

@@ -48,14 +48,6 @@
 
         <div class="navbar-end">
           <div class="navbar-item">
-            <div v-if="cartHasItems" class="button is-warning" @click="loadCheckout">
-              <span>Checkout</span>
-              <span class="icon is-small is-left">
-                <font-awesome-icon :icon="['fas', 'shopping-basket']"></font-awesome-icon>
-              </span>
-            </div>
-          </div>
-          <div class="navbar-item">
             <div v-if="loggedIn" class="buttons">
               <a class="button is-light" @click="logUserOut">
                 Log out
@@ -73,6 +65,22 @@
         </div>
       </div>
     </nav>
+    <div class="level">
+      <div class="navbar-end">
+        <div v-if="cartHasItems" class="button is-info" @click="viewCart">
+          <span>Cart</span>
+          <span class="icon is-small is-left">
+            <font-awesome-icon :icon="['fas', 'shopping-cart']"></font-awesome-icon>
+          </span>
+        </div>
+        <div v-if="cartHasItems" class="button is-warning sub-nav-bar" @click="loadCheckout">
+          <span>Checkout</span>
+          <span class="icon is-small is-left">
+            <font-awesome-icon :icon="['fas', 'shopping-basket']"></font-awesome-icon>
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -102,7 +110,10 @@ export default {
       this.$store.dispatch('clearCart')
     },
     loadCheckout () {
-
+      this.$router.push('/cart')
+    },
+    viewCart () {
+      this.$router.push('/cart')
     }
   },
   computed: {
@@ -117,4 +128,7 @@ export default {
 </script>
 
 <style scoped>
+  .sub-nav-bar {
+    margin-left: 1em;
+  }
 </style>

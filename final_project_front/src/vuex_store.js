@@ -23,7 +23,11 @@ export default {
       cart: {
         items: []
       },
-      previousPage: '/'
+      previousPage: '/',
+      images: [],
+      page: 0,
+      count: 0,
+      errors: {}
     },
     mutations: {
       showSingleImageModal (state, image) {
@@ -46,13 +50,24 @@ export default {
         }
       },
       addToCart (state, cartItem) {
-        state.cart.items.push(cartItem)
+        let index = state.cart.items.findIndex(item => item.id === cartItem.id)
+
+        if (index > -1) {
+          state.cart.items[index].qty += 1
+        } else {
+          cartItem.qty = 1
+          state.cart.items.push(cartItem)
+        }
       },
       removeFromCart (state, cartItem) {
         let index = state.cart.items.findIndex(item => item.id === cartItem.id)
 
         if (index > -1) {
-          state.cart.items.splice(index, 1)
+          if (state.cart.items[index].qty - 1 < 1) {
+            state.cart.items.splice(index, 1)
+          } else {
+            state.cart.items[index].qty -= 1
+          }
         }
       }
     },
@@ -84,6 +99,17 @@ export default {
             postToCartUpdate(state, error => {})
           })
           .catch(error => console.log(error))
+      },
+      loadImages({ commit, state}) {
+        plainAxiosInstance.get('/photos', { page: state.page, count: state.count })
+        .then(response => {
+          let knownIds = state.images.map(image => image.id)
+          let unknownImages = response.data.images.filter(image => !knownIds.includes(image.id))
+          state.images = [...state.images, ...unknownImages]
+        })
+        .catch(error => {
+          state.errors.connectionError = error
+        })
       }
     }
   })
