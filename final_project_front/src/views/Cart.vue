@@ -13,6 +13,9 @@ export default {
   created () {
     this.bootIfNoCart()
   },
+  mounted () {
+    this.$store.state.previousPage = '/cart'
+  },
   updated() {
     console.log('updated')
     this.bootIfNoCart()

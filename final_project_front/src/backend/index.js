@@ -38,6 +38,7 @@ securedAxiosInstance.interceptors.request.use(config => {
 securedAxiosInstance.interceptors.response.use(response => {
   if (response.headers['x-csrf-token']) {
     securedAxiosInstance.csrfToken = response.headers['x-csrf-token']
+    return response
   }
 }, error => {
   if (error.response && error.response.status && (error.response.status === 401 || error.response.status === 422)) {

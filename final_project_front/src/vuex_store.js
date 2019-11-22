@@ -19,6 +19,7 @@ export default {
       user: {
         name: null,
         paymentTokens: [],
+        addresses: [],
       },
       cart: {
         items: []
@@ -47,6 +48,7 @@ export default {
         state.user = {
           name: null,
           paymentTokens: [],
+          addresses: []
         }
       },
       addToCart (state, cartItem) {
@@ -88,10 +90,9 @@ export default {
         plainAxiosInstance.get('/users.json')
           .then(response => {
             commit('logInUser', response.data.customer)
-            console.log(response.data)
+
             if (response.data.cart) {
               response.data.cart.forEach(item => {
-                console.log(item)
                 commit('addToCart', item)
               })
             }
@@ -110,6 +111,18 @@ export default {
         .catch(error => {
           state.errors.connectionError = error
         })
+      },
+      loadCustomerAddresses({ commit, state }) {
+        securedAxiosInstance.post('/users/addresses.json')
+          .then(response => {
+            console.log(response)
+            state.user.addresses = response.data.addresses
+            console.log(state.user.addresses)
+          })
+          .catch(error => {
+            console.log(error)
+            state.errors.customerDataError = error
+          })
       }
     }
   })

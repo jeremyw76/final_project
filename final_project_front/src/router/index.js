@@ -7,6 +7,7 @@ import Photos from '@/views/Photos'
 import Signup from '@/views/Signup'
 import SignupSuccess from '@/views/SignupSuccess'
 import Cart from '@/views/Cart'
+import Checkout from '@/views/Checkout'
 
 loadFontAwesome();
 
@@ -38,6 +39,10 @@ export default new Router({
     {
       path: '/cart',
       component: Cart
+    },
+    {
+      path: '/checkout',
+      component: Checkout
     }
   ]
 })

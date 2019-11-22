@@ -110,7 +110,7 @@ export default {
       this.$store.dispatch('clearCart')
     },
     loadCheckout () {
-      this.$router.push('/cart')
+      this.$router.push('/checkout')
     },
     viewCart () {
       this.$router.push('/cart')

@@ -36,9 +36,11 @@ class SessionsController < Devise::SessionsController
   end
 
   def addresses
-    customer = Customer.where(user_id: current_user.id)
+    customer = Customer.where(user_id: current_user.id).first
 
-    render json: { addresses: customer.addresses }
+    addresses = customer.addresses.includes :province
+
+    render json: { addresses: addresses.as_json(include: :province) }
   end
 
   def respond_with(user, path)
