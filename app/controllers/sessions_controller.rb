@@ -35,6 +35,12 @@ class SessionsController < Devise::SessionsController
     session = nil
   end
 
+  def addresses
+    customer = Customer.where(user_id: current_user.id)
+
+    render json: { addresses: customer.addresses }
+  end
+
   def respond_with(user, path)
     render json: customer_data(user)
   end
