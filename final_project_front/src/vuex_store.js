@@ -28,7 +28,16 @@ export default {
       images: [],
       page: 0,
       count: 0,
-      errors: {}
+      errors: {
+        customerDataError: null
+      },
+      provinces: [],
+      taxes: {
+        canCalculateTaxes: false,
+        provinceId: undefined,
+        rate: 0
+      },
+      shouldSaveAddress: true
     },
     mutations: {
       showSingleImageModal (state, image) {
@@ -71,6 +80,20 @@ export default {
             state.cart.items[index].qty -= 1
           }
         }
+      },
+      canCalculateTaxes (state, payload)
+      {
+        state.taxes.provinceId = payload.provinceId
+        state.taxes.canCalculateTaxes = payload.validProvince
+        state.taxes.rate = state.provinces.find(province => province.id == payload.provinceId).tax_rate
+      },
+      clearTaxData (state) {
+        state.taxes.canCalculateTaxes = false
+        state.taxes.provinceId = null
+        state.taxes.rate = 0
+      },
+      setShouldSaveAddress(state, shouldSaveAddress) {
+        state.shouldSaveAddress = shouldSaveAddress
       }
     },
     actions: {
@@ -112,15 +135,14 @@ export default {
           state.errors.connectionError = error
         })
       },
-      loadCustomerAddresses({ commit, state }) {
-        securedAxiosInstance.post('/users/addresses.json')
+      loadCheckout({ commit, state }) {
+        securedAxiosInstance.post('/checkout.json')
           .then(response => {
-            console.log(response)
             state.user.addresses = response.data.addresses
-            console.log(state.user.addresses)
+            state.provinces = response.data.provinces
+            state.errors.customerDataError = null
           })
           .catch(error => {
-            console.log(error)
             state.errors.customerDataError = error
           })
       }

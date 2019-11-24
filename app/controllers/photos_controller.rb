@@ -9,7 +9,8 @@ class PhotosController < ApplicationController
         small_url: small_image_url(photo),
         large_url: large_image_url(photo),
         description: photo.description,
-        price: photo.display_price
+        price: photo.display_price,
+        price_in_cents: photo.value
       }
     end
 

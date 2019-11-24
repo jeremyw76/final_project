@@ -19,7 +19,7 @@ import PayButton from '@/components/PayButton'
 
 export default {
   created () {
-    this.$store.dispatch('loadCustomerAddresses')
+    this.$store.dispatch('loadCheckout')
   },
   mounted () {
     this.$store.state.previousPage = '/checkout'
@@ -31,6 +31,8 @@ export default {
     if (!this.$store.state.loggedIn) {
       this.$router.replace('/login')
     }
+
+    this.$store.commit('clearTaxData')
   },
   components: {
     CheckoutNav,
