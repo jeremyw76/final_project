@@ -31,7 +31,12 @@ module FinalProject
       allow do
          origins 'http://localhost:8080'
          resource '*', :headers => :any, :methods => [:get, :post, :delete, :options], credentials: true, expose: ['X-CSRF-Token']
-       end
+      end
+
+      allow do
+        origins '*.ngrok.io'
+        resource '*', :headers => :any, :methods => [:get, :post, :delete, :options], credentials: true, expose: ['X-CSRF-Token']
+      end
     end
 
     # Settings in config/environments/* take precedence over those specified here.

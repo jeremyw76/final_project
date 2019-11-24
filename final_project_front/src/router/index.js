@@ -8,6 +8,8 @@ import Signup from '@/views/Signup'
 import SignupSuccess from '@/views/SignupSuccess'
 import Cart from '@/views/Cart'
 import Checkout from '@/views/Checkout'
+import PaymentSuccess from '@/views/PaymentSuccess'
+import PaymentError from '@/views/PaymentError'
 
 loadFontAwesome();
 
@@ -43,6 +45,14 @@ export default new Router({
     {
       path: '/checkout',
       component: Checkout
+    },
+    {
+      path: '/payment_success',
+      component: PaymentSuccess
+    },
+    {
+      path: '/payment_error',
+      component: PaymentError
     }
   ]
 })

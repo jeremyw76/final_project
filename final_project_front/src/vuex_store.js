@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import 'es6-promise/auto'
 import { securedAxiosInstance, plainAxiosInstance } from './backend/index'
+import Stripe from './backend/stripe'
 
 Vue.use(Vuex)
 
@@ -134,6 +135,12 @@ export default {
         country: address.province.country,
         postalCode: address.postal_code
         }
+      },
+      stripeSuccess (response) {
+        console.log('Stripe Success!!')
+      },
+      stripeError (error) {
+        console.log('Stripe Error!')
       }
     },
     actions: {
@@ -197,7 +204,8 @@ export default {
 
         securedAxiosInstance.post('/payments/create.json')
           .then(response => {
-
+            Stripe.sessionId = response.data.sessionId
+            Stripe.redirectToCheckout(commit.stripeSuccess, commit.stripeError)
           }).catch(error => {
             state.errors.orderProcessError = error
           })
