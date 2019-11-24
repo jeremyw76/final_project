@@ -42,9 +42,9 @@
           <p class="control">
             <input
               class="input"
-              :class="{'is-danger':!validProvince}"
+              :class="{'is-danger':provinceHasError}"
               type="text"
-              v-model="currentAddress.province.name"
+              v-model="currentAddress.province"
               @blur="onProvinceBlur"
             />
           </p>
@@ -52,13 +52,13 @@
         <div class="field">
           <label class="label">Country</label>
           <p class="control">
-            <input class="input" type="text" v-model="currentAddress.province.country"/>
+            <input class="input" type="text" v-model="currentAddress.country"/>
           </p>
         </div>
         <div class="field">
           <label class="label">Postal Code</label>
           <p class="control">
-            <input class="input" type="text" v-model="currentAddress.postal_code"/>
+            <input class="input" type="text" v-model="currentAddress.postalCode"/>
           </p>
         </div>
       </div>
@@ -77,47 +77,29 @@ import 'es6-promise/auto'
 import { store } from 'vuex'
 
 export default {
-  data: function () { return {
-    currentAddress: {
-      address1: '',
-      address2: '',
-      city: '',
-      province: {
-        name: ''
-      },
-      country: '',
-      postal_code: '',
-    },
-    validProvince: true,
-  }},
+  data: function () {
+    return {
+      provinceHasError: false
+    }
+  },
   methods: {
     onAddressSelectChange (event) {
-      this.currentAddress = this.addresses.find(address => address.id == event.target.value)
-      this.validProvince = this.selectedProvinceIsValid()
-      this.updateTaxValidation()
+      let id = event.target.value
+      let selectedAddress = this.addresses.find(address => address.id == id)
+      this.$store.commit('setAddress', selectedAddress)
+      this.validateProvince()
     },
     onProvinceBlur (event) {
-      this.validProvince = this.selectedProvinceIsValid()
-      this.updateTaxValidation()
-    },
-    selectedProvinceIsValid () {
-      let provinceNames = this.$store.state.provinces.map(province => province.name)
-      return provinceNames === [] ||
-             provinceNames.includes(this.currentAddress.province.name)
-    },
-    updateTaxValidation () {
-      this.$store.commit('clearTaxData')
-      let province = this.getProvinceForName(this.currentAddress.province.name)
-
-      if (province !== undefined) {
-        this.$store.commit('canCalculateTaxes', {validProvince: this.validProvince, provinceId: province.id})
-      }
+      this.validateProvince()
     },
     getProvinceForName (name) {
       return this.$store.state.provinces.find(province => province.name === name)
     },
     saveAddressChanged (event) {
       this.$store.commit('setShouldSaveAddress', event.target.checked)
+    },
+    validateProvince() {
+      this.provinceHasError = this.currentProvinceName !== '' && !this.selectedProvinceIsValid
     }
   },
   computed: {
@@ -125,7 +107,7 @@ export default {
       return this.$store.state.user.name
     },
     currentProvinceName () {
-      return this.currentAddress.province.name
+      return this.$store.state.currentAddress.province
     },
     hasAddresses () {
       return this.addresses.length > 0
@@ -134,7 +116,13 @@ export default {
       return this.$store.state.user.addresses
     },
     canCalculateTaxes () {
-      return this.$store.state.provinces !== [] && this.selectedProvinceIsValid()
+      return this.$store.getters.canCalculateTaxes
+    },
+    currentAddress () {
+      return this.$store.state.currentAddress
+    },
+    selectedProvinceIsValid() {
+      return this.$store.getters.selectedProvinceIsValid
     }
   }
 }

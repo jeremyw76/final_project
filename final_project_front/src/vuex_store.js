@@ -21,6 +21,14 @@ export default {
         paymentTokens: [],
         addresses: [],
       },
+      currentAddress: {
+        address1: undefined,
+        address2: undefined,
+        city: undefined,
+        province: undefined,
+        country: undefined,
+        postalCode: undefined
+      },
       cart: {
         items: []
       },
@@ -38,6 +46,26 @@ export default {
         rate: 0
       },
       shouldSaveAddress: true
+    },
+    getters: {
+      currentProvince: state => {
+        return state.provinces.find(province => province.name === state.currentAddress.province)
+      },
+      selectedProvinceIsValid: state => {
+        const provinceNames = state.provinces.map(province => province.name)
+
+        return provinceNames !== [] && provinceNames.includes(state.currentAddress.province)
+      },
+      canCalculateTaxes: (state, getters) => {
+        return getters.selectedProvinceIsValid
+      },
+      isValidOrder (state, getters) {
+        const currentAddressId = state.currentAddressId
+        return true;
+        return getters.canCalculateTaxes &&
+               currentAddressId !== undefined &&
+               this.store.state.user.addresses[currentAddressId] ==0;
+      }
     },
     mutations: {
       showSingleImageModal (state, image) {
@@ -94,6 +122,16 @@ export default {
       },
       setShouldSaveAddress(state, shouldSaveAddress) {
         state.shouldSaveAddress = shouldSaveAddress
+      },
+      setAddress(state, address) {
+        state.currentAddress = {
+          address1: address.address1,
+        address2: address.address2,
+        city: address.city,
+        province: address.province.name,
+        country: address.province.country,
+        postalCode: address.postal_code
+        }
       }
     },
     actions: {

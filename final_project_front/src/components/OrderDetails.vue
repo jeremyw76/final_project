@@ -60,8 +60,7 @@ export default {
       return '$' + this.provincialTaxes.toFixed(2)
     },
     provincialTaxCode () {
-      if (this.province !== undefined) return this.province.tax_code + 'ST'
-      return ''
+      return this.province !== undefined ? this.province.tax_code + 'ST' : ''
     }
   },
   computed: {
@@ -88,23 +87,15 @@ export default {
       return result / 100
     },
     canCalculateTaxes () {
-      return this.$store.state.taxes.canCalculateTaxes
+      return this.$store.getters.canCalculateTaxes
     },
     province () {
-      let provinceId = this.$store.state.taxes.provinceId
-      let province = this.$store.state.provinces.find(province => province.id == provinceId)
-
-      return province
-    },
-    provincialTaxRate () {
-      if (this.province !== undefined) return this.province.tax_rate
-
-      return 0
+      return this.$store.getters.currentProvince
     },
     provincialTaxes () {
-      if (this.province === undefined) return 0
+      const currentProvince = this.$store.getters.currentProvince
 
-      return this.$store.state.taxes.rate * this.subtotal
+      return currentProvince === undefined ? 0 : currentProvince.tax_rate * this.subtotal
     },
     gst () {
       return this.province !== undefined && this.province.tax_code === 'H' ? 0 : 0.05 * this.subtotal
