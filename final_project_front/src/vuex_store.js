@@ -37,7 +37,8 @@ export default {
       page: 0,
       count: 0,
       errors: {
-        customerDataError: null
+        customerDataError: undefined,
+        orderProcessError: undefined
       },
       provinces: [],
       taxes: {
@@ -60,11 +61,12 @@ export default {
         return getters.selectedProvinceIsValid
       },
       isValidOrder (state, getters) {
-        const currentAddressId = state.currentAddressId
-        return true;
         return getters.canCalculateTaxes &&
-               currentAddressId !== undefined &&
-               this.store.state.user.addresses[currentAddressId] ==0;
+               state.currentAddress !== undefined &&
+               Object.keys(state.currentAddress).filter(key =>
+                key !== 'address2' &&
+                (state.currentAddress[key] === undefined || state.currentAddress[key].trim() == '')
+                ).length === 0
       }
     },
     mutations: {
@@ -182,6 +184,22 @@ export default {
           })
           .catch(error => {
             state.errors.customerDataError = error
+          })
+      },
+      processOrder({ commit, state }) {
+        const orderPayload = {
+          cart: state.cart,
+          currentAddress: state.currentAddress,
+          userId: state.user.id,
+          provinceId: state.provinces.find(province => province.name === state.currentAddress.province).id,
+          saveAddress: state.shouldSaveAddress
+        }
+
+        securedAxiosInstance.post('/payments/create.json')
+          .then(response => {
+
+          }).catch(error => {
+            state.errors.orderProcessError = error
           })
       }
     }

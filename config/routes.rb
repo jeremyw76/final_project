@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   get 'photos/' => 'photos#index'
   post 'carts/update' => 'carts#update'
   post 'checkout' => 'checkout#loadCheckout'
+  post 'payments/create' => 'payments#createPayment'
 
   devise_scope :user do
     post 'refresh/' => 'sessions#refresh'
