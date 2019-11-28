@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   post 'carts/update' => 'carts#update'
   post 'checkout' => 'checkout#loadCheckout'
   post 'payments/create' => 'payments#createPayment'
+  post 'payments/processed' => 'payments#payments_processed'
 
   devise_scope :user do
     post 'refresh/' => 'sessions#refresh'
