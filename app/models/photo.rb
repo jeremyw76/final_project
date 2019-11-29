@@ -1,6 +1,8 @@
 class Photo < ApplicationRecord
   has_one_attached :image
   has_many :line_items, as: :item
+  has_many :photo_tags
+  has_many :tags, through: :photo_tags
 
   validates :description, presence: true
   validates :value, presence: true
