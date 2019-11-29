@@ -39,8 +39,6 @@ module OrdersHelper
 
     pst_rate = selected_address.province.tax_rate
     tax_code = selected_address.province.tax_code
-    pst = 0
-    gst = 0
 
     line_items = params[:cart][:items].map do |line_item|
       case line_item[:type]
@@ -50,8 +48,8 @@ module OrdersHelper
         item = Package.find_by_id(line_item[:id])
       end
 
-      pst = pst + (pst_rate * item.value)
-      gst = gst + (GST_RATE * item.value)
+      pst = pst_rate * item.value * line_item[:qty]
+      gst = GST_RATE * item.value * line_item[:qty]
 
       item = LineItem.create(
         order: order,
@@ -66,14 +64,14 @@ module OrdersHelper
         line_item: item,
         code: tax_code,
         rate: pst_rate,
-        amount: pst
+        amount: pst.round
       )
 
       Tax.create(
         line_item: item,
         code: 'G',
         rate: GST_RATE,
-        amount: gst
+        amount: gst.round
       )
     end
 

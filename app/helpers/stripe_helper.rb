@@ -21,7 +21,7 @@ module StripeHelper
     if pst > 0 then
       tax_line_item = {
         name: "#{order.address.province.tax_code}ST",
-        amount: pst.to_i,
+        amount: pst.round,
         quantity: 1,
         currency: 'cad'
       }
@@ -32,7 +32,7 @@ module StripeHelper
     if order.address.province.tax_code != 'H' then
       gst_line_item = {
         name: "GST",
-        amount: gst.to_i,
+        amount: gst.round,
         quantity: 1,
         currency: 'cad'
       }
