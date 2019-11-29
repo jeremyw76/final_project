@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   post 'checkout' => 'checkout#loadCheckout'
   post 'payments/create' => 'payments#createPayment'
   post 'payments/processed' => 'payments#payments_processed'
+  get 'sessions/new' => 'session#new'
 
   devise_scope :user do
     post 'refresh/' => 'sessions#refresh'
