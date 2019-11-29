@@ -3,12 +3,13 @@ class PaymentsController < ApplicationController
 
 
   def createPayment
-    session = StripeHelper::get_stripe_session(params)
+    order = OrdersHelper::create_order(params)
+    session = StripeHelper::get_stripe_session(order)
 
     render json: {sessionId: session.id}
   end
 
   def payments_processed
-    puts params
+    order = Order.find_by_id(params[:data][:object][:id])
   end
 end

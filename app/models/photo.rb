@@ -1,5 +1,6 @@
 class Photo < ApplicationRecord
   has_one_attached :image
+  has_many :line_items, as: :item
 
   validates :description, presence: true
   validates :value, presence: true

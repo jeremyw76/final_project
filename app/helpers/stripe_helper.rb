@@ -1,33 +1,26 @@
 module StripeHelper
-  GST_RATE = 0.05
-
-  def self.get_stripe_session(params)
+  def self.get_stripe_session(order)
     Stripe.api_key = Rails.application.credentials.dig(:DEVELOPMENT_STRIPE_SECRET_KEY)
 
     pst = 0.0
     gst = 0.0
 
-    province = Province.where(id: params[:provinceId]).first
-    pst_rate = province.tax_rate
-
-    line_items = params[:cart][:items].map do |line_item|
-      photo = Photo.where(id: line_item[:id]).first
-
-      pst = pst + (pst_rate * photo.value)
-      gst = gst + (GST_RATE * photo.value)
+    line_items = order.line_items.map do |line_item|
+      pst = pst + line_item.taxes.where.not(code: 'G').reduce(0) { |sum, tax| sum + tax.amount }
+      gst = gst + line_item.taxes.where(code: 'G').reduce(0) { |sum, tax| sum + tax.amount }
 
       item = {
-        name: 'Photo resource',
-        description: photo.description,
-        amount: photo.value,
+        name: line_item.item_type,
+        description: line_item.item.description,
+        amount: line_item.value,
         currency: 'cad',
-        quantity: line_item[:qty]
+        quantity: line_item.quantity
       }
     end
 
     if pst > 0 then
       tax_line_item = {
-        name: "#{province.tax_code}ST",
+        name: "#{order.address.province.tax_code}ST",
         amount: pst.to_i,
         quantity: 1,
         currency: 'cad'
@@ -36,7 +29,7 @@ module StripeHelper
       line_items.push tax_line_item
     end
 
-    if province.tax_code != 'H' then
+    if order.address.province.tax_code != 'H' then
       gst_line_item = {
         name: "GST",
         amount: gst.to_i,
@@ -48,6 +41,7 @@ module StripeHelper
     end
 
     session = Stripe::Checkout::Session.create(
+      client_reference_id: order.id,
       payment_method_types: ['card'],
       line_items: line_items,
       success_url: "http://localhost:8080/payment_success?session_id={CHECKOUT_SESSION_ID}",

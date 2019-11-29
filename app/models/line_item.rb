@@ -1,6 +1,7 @@
 class LineItem < ApplicationRecord
   belongs_to :order
   belongs_to :item, polymorphic: true
+  has_many :taxes
 
   validates :order, presence: true
   validates :item_type, presence: true
