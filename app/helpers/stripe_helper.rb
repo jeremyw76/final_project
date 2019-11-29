@@ -40,7 +40,7 @@ module StripeHelper
       line_items.push gst_line_item
     end
 
-    session = Stripe::Checkout::Session.create(
+    stripe_session = Stripe::Checkout::Session.create(
       client_reference_id: order.id,
       payment_method_types: ['card'],
       line_items: line_items,
