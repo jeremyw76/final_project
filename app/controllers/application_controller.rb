@@ -9,4 +9,12 @@ class ApplicationController < ActionController::Base
   def set_csrf_token_header
     response.headers['X-CSRF-Token'] = form_authenticity_token
   end
+
+  def current_user
+    User.find_by_id(session[:user_id])
+  end
+
+  def current_user=(value)
+    session[:user_id] = value.nil? ? nil : value.id
+  end
 end

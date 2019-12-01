@@ -1,37 +1,41 @@
-class SessionsController < Devise::SessionsController
+class SessionsController < ApplicationController
   respond_to :json
 
-  def create
-    super
+  def new
+    session[:per_page] = 10
+    session[:pages] = (Photo.count / session[:per_page].to_f).ceil
 
-    unless current_user.cart.nil?
-      current_user.cart.session_id = session.id
-      current_user.cart.save
-    else
-      cart = Cart.where(session_id: session.id).first_or_create(session_id: session.id)
-      cart.user_id = current_user.id
-      cart.save
-    end
+    response = {
+      pagination: {
+        pages: session[:pages],
+        per_page: session[:per_page]
+      },
+      session: customer_data(current_user)
+    }
+
+    render json: response
   end
 
-  def show
-    if cookies[:session_id] === session.id then
-      response_data = customer_data(current_user)
-    else
-      response_data = {
-        customer: nil,
-        cart: [],
-        csrf_token: form_authenticity_token
-      }
+  def login
+    current_user = nil
+
+    user_name = params[:user_name]
+    password = params[:password]
+    response = {}
+
+    user = User.find_by(email: user_name).try(:authenticate, password)
+    response[:success] = true unless user == nil
+
+    if response[:success] then
+      self.current_user = user
+      response[:session] = customer_data(user)
     end
 
-    cookies[:session_id] = session.id
-    render json: response_data
+    render json: response
   end
 
   def destroy
-    super
-
+    current_user = nil
     session = nil
   end
 
@@ -58,29 +62,23 @@ class SessionsController < Devise::SessionsController
       name: "#{customer.first_name} #{customer.last_name}"
     }
 
-    cart_data = []
+    unless user.nil? || user.cart.nil? then
+      cart_data = []
+      user.cart.items.each do |item|
+        item_data = {
+          id: item["id"],
+          type: item["type"],
+          quantity: item["qty"]
+        }
 
-    # unless user.nil? || user.cart.nil? then
-    #   puts 'now'
-    #   puts JSON.parse(user.cart.items)[0]
-    #   puts "hi"
-    #   JSON.parse(user.cart.items).each do |item|
-    #     puts item.type
-    #     item_data = {
-    #       id: item["id"],
-    #       type: item["type"]
-    #     }
-    #     cart_data.push item_data
-    #   end
-    # end
+        cart_data.push item_data
+      end
+    end
 
     output = {
       customer: customer_data,
       cart: cart_data,
       csrf_token: form_authenticity_token
     }
-
-    puts output
-    return output
   end
 end

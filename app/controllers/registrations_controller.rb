@@ -1,4 +1,4 @@
-class RegistrationsController < Devise::RegistrationsController
+class RegistrationsController < ApplicationController
   respond_to :json, :html
 
   def create
@@ -8,9 +8,27 @@ class RegistrationsController < Devise::RegistrationsController
       }
 
       format.json {
-        user = User.create(params.permit(user: [:email, :password, :password_confirmation])[:user])
-        user.save ? (render json: {success: true}) :
-                     (render json: {success: false, errors: user.errors})
+        user = User.new(
+          email: params[:user][:email],
+          password: params[:user][:password],
+          password_confirmation: params[:user][:password_confirmation]
+        )
+
+        if user.save then
+          customer = Customer.new(
+            first_name: params[:user][:firstName],
+            last_name: params[:user][:lastName],
+            user_id: user.id
+          )
+
+          if customer.save then
+            render json: {success: true}
+          else
+            render json: {success:false}
+          end
+        else
+          render json: {success: false, errors: user.errors}
+        end
       }
     end
   end

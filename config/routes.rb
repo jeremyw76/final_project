@@ -4,20 +4,15 @@ Rails.application.routes.draw do
   post 'checkout' => 'checkout#loadCheckout'
   post 'payments/create' => 'payments#createPayment'
   post 'payments/processed' => 'payments#payments_processed'
-  get 'sessions/new' => 'session#new'
+  get 'tags' => 'tags#index'
 
-  devise_scope :user do
-    post 'refresh/' => 'sessions#refresh'
-    get 'users/' => 'sessions#show'
-    post 'users/addresses' => 'sessions#addresses'
-  end
+  get 'sessions/new' => 'sessions#new'
+  post 'sessions/login' => 'sessions#login'
+  post 'refresh' => 'sessions#refresh'
+
+  post 'users' => 'registrations#create'
 
   devise_for :admin_users, ActiveAdmin::Devise.config
-
-  devise_for :users, :controllers => {
-    sessions: 'sessions',
-    registrations: 'registrations'
-  }
 
   ActiveAdmin.routes(self)
 end
