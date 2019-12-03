@@ -60,9 +60,9 @@ module PhotosHelper
   end
 
   class CategoryFilter < Filter
-    def subset_for_category(category = nil)
-      unless category == nil then
-        @relation.includes(:tag).where(tag: {name: category})
+    def subset_for_category(tag_id = nil)
+      unless tag_id == nil then
+        @relation.includes(:tags).where(tags: {id: tag_id})
       else
         @relation
       end

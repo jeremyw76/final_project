@@ -10,7 +10,8 @@ class SessionsController < ApplicationController
         pages: session[:pages],
         per_page: session[:per_page]
       },
-      session: customer_data(current_user)
+      session: customer_data(current_user),
+      categories: Tag.all.map {|tag| {id: tag.id, name: tag.name.capitalize}}
     }
 
     render json: response
