@@ -5,12 +5,16 @@ class PhotosController < ApplicationController
     ids = params.key?(:ids) ? params[:ids] : nil
     page = params.key?(:page) ? params[:page].to_i : 1
     per_page = params.key?(:per_page) ? params[:per_page].to_i : nil
+    search_text = params.key?(:searchText) ? params[:searchText] : nil
+    puts "SEARCH_TEXT: #{search_text}"
 
     page = page < 1 ? 1 : page
 
     id_filtered_photos = PhotosHelper::IdFilter.new(Photo.all)
     category_filtered_photos = PhotosHelper::CategoryFilter.new(id_filtered_photos.subset_for_ids(ids))
-    photoset = PhotosHelper::Pagination.new(category_filtered_photos.subset_for_category(tag_id)).paginated(page, per_page)
+    search_text_filtered_photos = PhotosHelper::DescriptionFilter.new(category_filtered_photos.subset_for_category(tag_id))
+    photoset = PhotosHelper::Pagination.new(search_text_filtered_photos.subset_for_description_text(search_text)).paginated(page, per_page)
+
 
     session[:page] = page
     session[:per_page] = per_page

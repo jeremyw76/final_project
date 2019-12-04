@@ -8,11 +8,11 @@ module PhotosHelper
 
     def paginated(page, per_page)
       per_page = @relation.size if per_page == nil
-      offset = (page - 1) * per_page
       max_pages = (@relation.size / per_page.to_f).ceil
+      page = [page, max_pages].min
+      offset = [page - 1, 0].max * per_page
 
       photo_data = @relation.offset(offset).limit(per_page).with_attached_image.map do | photo |
-        puts "PHOTO #{photo.id}"
         {
           id: photo.id,
           small_url: small_image_url(photo),
@@ -63,6 +63,16 @@ module PhotosHelper
     def subset_for_category(tag_id = nil)
       unless tag_id == nil then
         @relation.includes(:tags).where(tags: {id: tag_id})
+      else
+        @relation
+      end
+    end
+  end
+
+  class DescriptionFilter < Filter
+    def subset_for_description_text(text = nil)
+      unless text == nil then
+        @relation.where('lower(description) LIKE ?', "%#{text.downcase}%")
       else
         @relation
       end
