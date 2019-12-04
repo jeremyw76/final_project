@@ -2,7 +2,7 @@ class PaymentsController < ApplicationController
   protect_from_forgery with: :exception, except: :payments_processed
 
   def createPayment
-    order = OrdersHelper::create_order(params)
+    order = OrdersHelper::create_order(params, current_user)
     @@stripe_session = StripeHelper::get_stripe_session(order)
 
     render json: {sessionId: @@stripe_session.id}

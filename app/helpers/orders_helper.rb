@@ -1,12 +1,8 @@
 module OrdersHelper
   GST_RATE = 0.05
-  ###### REMOVE THIS!!!!!
-  @current_user = User.where(id: 25).first
 
-  def self.create_order(params)
-    ####### REMOVE THIS!!!!!!
-    current_user = @current_user
-    customer = Customer.find_by_user_id(current_user.id)
+  def self.create_order(params, user)
+    customer = Customer.find_by_user_id(user.id)
 
     address = params[:currentAddress]
 
@@ -25,7 +21,7 @@ module OrdersHelper
         address1: address[:address1],
         address2: address[:address2],
         city: address[:city],
-        province: Province.find_by_name(address:province),
+        province: Province.find_by_name(address[:province]),
         postal_code: address[:postalCode],
         customer_id: params[:saveAddress] ? customer.id : nil
       )
@@ -77,34 +73,4 @@ module OrdersHelper
 
     order
   end
-
-  # t.bigint "line_item_id", null: false
-  #   t.string "code"
-  #   t.decimal "rate", precision: 3, scale: 2
-  #   t.integer "amount"
-
-  # t.bigint "order_id", null: false
-  #   t.string "item_type", null: false
-  #   t.bigint "item_id", null: false
-  #   t.integer "quantity"
-  #   t.integer "value"
-  #   t.boolean "taxable"
-
-  # params = {
-  #   "cart"=>{
-  #     "items"=>[
-  #       {"type"=>"Photo", "id"=>4, "qty"=>1},
-  #       {"type"=>"Photo", "id"=>2, "qty"=>1}
-  #     ]},
-  #   "currentAddress"=>{
-  #     "address1"=>"Box 623",
-  #     "address2"=>nil,
-  #     "city"=>"Kerrobert",
-  #     "province"=>"Nunavut",
-  #     "country"=>"Canada",
-  #     "postalCode"=>"S0L 1R0"
-  #   },
-  #   "provinceId"=>8,
-  #   "saveAddress"=>true,
-  #   "payment"=>{}}
 end
